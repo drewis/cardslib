@@ -28,6 +28,8 @@ import com.etsy.android.grid.StaggeredGridView;
 
 import it.gmariotti.cardslib.library.extra.R;
 import it.gmariotti.cardslib.library.extra.staggeredgrid.internal.CardGridStaggeredArrayAdapter;
+import it.gmariotti.cardslib.library.extra.staggeredgrid.internal.CardGridStaggeredCursorAdapter;
+import it.gmariotti.cardslib.library.internal.CardGridCursorAdapter;
 
 /**
  * This class realizes a CardGridStaggeredView.
@@ -70,6 +72,11 @@ public class CardGridStaggeredView extends StaggeredGridView {
      *  Card Grid Staggered Array Adapter
      */
     protected CardGridStaggeredArrayAdapter mAdapter;
+
+    /**
+     * Card Cursor Adapter
+     */
+    protected CardGridStaggeredCursorAdapter mCursorAdapter;
 
     //--------------------------------------------------------------------------
     // Custom Attrs
@@ -151,6 +158,8 @@ public class CardGridStaggeredView extends StaggeredGridView {
     public void setAdapter(ListAdapter adapter) {
         if (adapter instanceof CardGridStaggeredArrayAdapter){
             setAdapter((CardGridStaggeredArrayAdapter)adapter);
+        } else if (adapter instanceof CardGridStaggeredCursorAdapter) {
+            setAdapter((CardGridStaggeredCursorAdapter) adapter);
         }else{
             Log.w(TAG, "You are using a generic adapter. Pay attention: your adapter has to call cardGridArrayAdapter#getView method.");
             super.setAdapter(adapter);
@@ -170,6 +179,19 @@ public class CardGridStaggeredView extends StaggeredGridView {
 
         adapter.setCardGridView(this);
         mAdapter=adapter;
+    }
+
+    /**
+     * Set (@Lintk CardGridStaggeredCursorAdapter} and layout used by items in CardGridStaggeredView
+     * @param adapter
+     */
+    public void setAdapter(CardGridStaggeredCursorAdapter adapter) {
+        super.setAdapter(adapter);
+
+        adapter.setRowLayoutId(list_card_layout_resourceID);
+
+        adapter.setCardGridView(this);
+        mCursorAdapter = adapter;
     }
 
     /**
